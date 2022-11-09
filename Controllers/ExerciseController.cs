@@ -6,13 +6,19 @@ namespace CalApi.Controllers
     [Route("[controller]")]
     public class ExerciseController : ControllerBase
     {
-        private static int[] Nums1 = {Random.Shared.Next(1, 99), Random.Shared.Next(1, 99), Random.Shared.Next(1, 99), Random.Shared.Next(1, 99), Random.Shared.Next(1, 99), Random.Shared.Next(1, 99), Random.Shared.Next(1, 99), Random.Shared.Next(1, 99), Random.Shared.Next(1, 99), Random.Shared.Next(1, 99)
-    };
+        //     private IHttpClientFactory _clientFactory;
+
+        //     public void AccountsController(IHttpClientFactory clientFactory)
+        // {
+        //     _clientFactory = clientFactory;
+        // }
+        private static int[] Nums1 = new int[10];
+
         private static int[] Nums2 = new int[10];
 
         private int[] Ans = new int[10];
 
-        private static readonly string[] Operator = { "+", "-", "*", "/" };
+        private static readonly string[] Operator = { "+", "-", "×", "÷" };
 
         private string[] OperatorsUsed = new string[10];
 
@@ -25,23 +31,25 @@ namespace CalApi.Controllers
             _logger = logger;
         }
 
+
         [HttpGet(Name = "GetExercise")]
         public ActionResult<Exercise> Get()
         {
             var randomizing = new Random();
             for (int i = 0; i < 10; i++)
             {
-                Nums2[i] = Random.Shared.Next(1,Nums1[i]);
+                Nums1[i] = Random.Shared.Next(1, 99);
+                Nums2[i] = Random.Shared.Next(1, Nums1[i]);
                 OperatorsUsed[i] = Operator[Random.Shared.Next(Operator.Length)];
 
                 if (OperatorsUsed[i] == "+") { Ans[i] = Nums1[i] + Nums2[i]; }
                 else if (OperatorsUsed[i] == "-") { Ans[i] = Nums1[i] - Nums2[i]; }
-                else if (OperatorsUsed[i] == "*") { Ans[i] = Nums1[i] * Nums2[i]; }
+                else if (OperatorsUsed[i] == "×") { Ans[i] = Nums1[i] * Nums2[i]; }
                 else { Ans[i] = Nums1[i] / Nums2[i]; }
 
                 if (Ans[i] > 0)
                 {
-                    options[i] = new int[] { Random.Shared.Next(1, Ans[i]+10), Random.Shared.Next(1, Ans[i]+10), Ans[i] };
+                    options[i] = new int[] { Random.Shared.Next(1, Ans[i] + 10), Random.Shared.Next(1, Ans[i] + 10), Ans[i] };
                     randomizing.Randomise(options[i]);
                 }
                 else
@@ -77,3 +85,4 @@ static class RandomE
         }
     }
 }
+
